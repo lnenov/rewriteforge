@@ -4,6 +4,7 @@ from cachetools import TTLCache, cached
 from cachetools.keys import hashkey
 
 from app.core.config import settings
+from app.llm.adapters import llm_adapter_instance  # Import the singleton
 from app.llm.interface import LLMAdapter
 
 logger = logging.getLogger(__name__)
