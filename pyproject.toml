@@ -13,11 +13,12 @@ uvicorn = {extras = ["standard"], version = "^0.29.0"}
 pydantic-settings = "^2.2.1"
 cachetools = "^5.3.3" # For caching stretch goal
 # Add specific LLM SDKs here if implementing real adapters
-# e.g., openai = "^1.14.3"
-# e.g., anthropic = "^0.21.3"
+openai = "^1.14.3"
+anthropic = "^0.21.3"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.1.1"
+pytest-mock = "3.14.0"
 httpx = "^0.27.0" # For testing async clients
 ruff = "^0.3.5"
 pytest-asyncio = "^0.23.6" # If using async test functions

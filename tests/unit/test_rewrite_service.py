@@ -31,9 +31,6 @@ async def test_rewrite_text_calls_adapter(rewrite_service, mock_llm_adapter):
     assert result == "Mocked rewrite result"
 
 
-# --- Caching Tests (Stretch Goal) ---
-
-
 @pytest.fixture
 def cached_rewrite_service(mock_llm_adapter):
     # Force enable cache for this test fixture

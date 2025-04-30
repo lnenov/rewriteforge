@@ -1,5 +1,6 @@
 import pytest
 
+from app.core.config import settings
 from app.llm.adapters import (
     OpenAILLMAdapter,
     StubLLMAdapter,
@@ -26,24 +27,17 @@ def test_get_llm_adapter_stub_default(monkeypatch):
 
 
 def test_get_llm_adapter_openai_no_key(monkeypatch, caplog):
-    monkeypatch.setenv("LLM_PROVIDER", "openai")
-    monkeypatch.delenv("LLM_API_KEY", raising=False)
+    monkeypatch.setattr(settings, "LLM_PROVIDER", "openai")
+    monkeypatch.setattr(settings, "LLM_API_KEY", None)
     adapter = get_llm_adapter()
     assert isinstance(adapter, StubLLMAdapter)  # Falls back to stub
     assert "OpenAI provider selected but no LLM_API_KEY found" in caplog.text
 
 
 def test_get_llm_adapter_openai_with_key(monkeypatch, mocker):
-    # Mock the openai package import check if needed
-    mocker.patch(
-        "importlib.import_module", return_value=True
-    )  # Simulate package exists
-    monkeypatch.setenv("LLM_PROVIDER", "openai")
-    monkeypatch.setenv("LLM_API_KEY", "fake-key")
+    monkeypatch.setattr(settings, "LLM_PROVIDER", "openai")
+    monkeypatch.setattr(settings, "LLM_API_KEY", "fake-key")
     adapter = get_llm_adapter()
     assert isinstance(adapter, OpenAILLMAdapter)
     assert adapter.api_key == "fake-key"
     assert adapter.health_check() is True
-
-
-# Add similar tests for Anthropic

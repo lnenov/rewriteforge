@@ -150,3 +150,8 @@ Response Body (Success: 200 OK):
 }
 
 Error Responses: 500 Internal Server Error, 503 Service Unavailable (depending on implementation if core components fail).
+
+
+## Next Steps
+
+# Add tests for Anthropic

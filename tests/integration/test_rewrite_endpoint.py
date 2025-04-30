@@ -3,6 +3,7 @@ from fastapi import status
 from httpx import AsyncClient
 
 from app.core.config import settings
+from app.llm.adapters import llm_adapter_instance
 
 # Import the app instance for the test client
 # Make sure PYTHONPATH includes the project root or adjust imports
@@ -75,12 +76,8 @@ async def test_health_check_endpoint():
 
 @pytest.mark.asyncio
 async def test_health_check_endpoint_unhealthy_adapter(monkeypatch, mocker):
-    # Simulate an unhealthy adapter check
-    mock_adapter = AsyncMock(spec=LLMAdapter)
-    mock_adapter.health_check.return_value = False
-    # Patch the singleton instance used by the dependency
-    mocker.patch(
-        "app.llm.adapters.llm_adapter_instance", return_value=mock_adapter
+    mocker.patch.object(
+        llm_adapter_instance, "health_check", return_value=False
     )
 
     async with AsyncClient(app=app, base_url="http://test") as client:
@@ -98,12 +95,10 @@ async def test_health_check_endpoint_unhealthy_adapter(monkeypatch, mocker):
 
 @pytest.mark.asyncio
 async def test_health_check_endpoint_adapter_error(monkeypatch, mocker):
-    # Simulate an error during adapter health check
-    mock_adapter = AsyncMock(spec=LLMAdapter)
-    mock_adapter.health_check.side_effect = Exception("LLM Connection Down")
-    # Patch the singleton instance used by the dependency
-    mocker.patch(
-        "app.llm.adapters.llm_adapter_instance", return_value=mock_adapter
+    mocker.patch.object(
+        llm_adapter_instance,
+        "health_check",
+        side_effect=Exception("LLM Connection Down"),
     )
 
     async with AsyncClient(app=app, base_url="http://test") as client:
