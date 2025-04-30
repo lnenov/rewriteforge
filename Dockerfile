@@ -5,9 +5,11 @@ FROM python:3.10-slim as builder
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
-ENV POETRY_VERSION=1.8.2 # Use a specific Poetry version
+# Use a specific Poetry version
+ENV POETRY_VERSION=1.8.2
 ENV POETRY_HOME="/opt/poetry"
-ENV POETRY_VIRTUALENVS_IN_PROJECT=true # Keep venv inside project dir for easier copying
+# Keep venv inside project dir for easier copying
+ENV POETRY_VIRTUALENVS_IN_PROJECT=true
 
 # Install Poetry
 RUN apt-get update && apt-get install --no-install-recommends -y curl \
