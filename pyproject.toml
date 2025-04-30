@@ -1,0 +1,57 @@
+[tool.poetry]
+name = "rewriteforge"
+version = "0.1.0"
+description = "RewriteForge Service"
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+packages = [{include = "app"}]
+
+[tool.poetry.dependencies]
+python = "^3.10" # Using 3.10+ for newer typing features if needed
+fastapi = {extras = ["all"], version = "^0.110.0"}
+uvicorn = {extras = ["standard"], version = "^0.29.0"}
+pydantic-settings = "^2.2.1"
+cachetools = "^5.3.3" # For caching stretch goal
+# Add specific LLM SDKs here if implementing real adapters
+# e.g., openai = "^1.14.3"
+# e.g., anthropic = "^0.21.3"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.1.1"
+httpx = "^0.27.0" # For testing async clients
+ruff = "^0.3.5"
+pytest-asyncio = "^0.23.6" # If using async test functions
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+# --- Ruff Configuration ---
+[tool.ruff]
+line-length = 88
+select = [
+    "E", "W", # pycodestyle
+    "F",      # pyflakes
+    "I",      # isort
+    "UP",     # pyupgrade
+    "B",      # flake8-bugbear
+    "C4",     # flake8-comprehensions
+    "SIM",    # flake8-simplify
+    "TID",    # flake8-tidy-imports
+    "ARG",    # flake8-unused-arguments
+    "RUF",    # Ruff-specific rules
+]
+ignore = ["E501"] # Ignore line length handled by formatter
+
+[tool.ruff.format]
+quote-style = "double"
+
+[tool.ruff.lint]
+# Add any specific configurations if needed
+[tool.ruff.lint.isort]
+known-first-party = ["app"]
+
+# --- Pytest Configuration ---
+[tool.pytest.ini_options]
+pythonpath = ["."]
+asyncio_mode = "auto" # To run async tests easily
