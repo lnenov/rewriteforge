@@ -16,6 +16,7 @@ A microservice to rewrite text into different styles (e.g., pirate, haiku, forma
 
 ## Project Structure
 
+~~~
 rewriteforge/
 ├── app/ # Main application code
 │ ├── api/ # HTTP API layer (FastAPI)
@@ -31,6 +32,7 @@ rewriteforge/
 ├── Dockerfile # Container definition
 ├── pyproject.toml # Project metadata and dependencies (Poetry)
 └── README.md # This file
+~~~
 
 ## Setup and Running
 
