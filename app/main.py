@@ -1,16 +1,20 @@
 import logging
-from fastapi import FastAPI, Depends
+
+from fastapi import Depends, FastAPI
 from fastapi.responses import JSONResponse
 
 from app.api.v1.endpoints import rewrite as api_v1_rewrite
 from app.core.config import settings
+from app.llm.adapters import llm_adapter_instance  # Import the singleton
 from app.llm.interface import LLMAdapter
-from app.llm.adapters import llm_adapter_instance # Import the singleton
 
 # --- Logging Configuration ---
 # Basic logging setup (customize as needed for production)
 log_level = logging.DEBUG if settings.RELOAD else logging.INFO
-logging.basicConfig(level=log_level, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logging.basicConfig(
+    level=log_level,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+)
 logger = logging.getLogger(__name__)
 
 # --- FastAPI Application ---
@@ -26,6 +30,7 @@ app = FastAPI(
 
 # --- Routers ---
 app.include_router(api_v1_rewrite.router, prefix="/v1", tags=["v1"])
+
 
 # --- Health Check Endpoint ---
 @app.get("/health", tags=["Health"])
@@ -50,7 +55,7 @@ async def health_check(llm: LLMAdapter = Depends(lambda: llm_adapter_instance)):
         logger.error(f"Health check failed during LLM adapter check: {e}")
         status["llm_adapter_status"] = "error"
         status["status"] = "error"
-        http_code = 500 # Internal Server Error
+        http_code = 500  # Internal Server Error
 
     return JSONResponse(content=status, status_code=http_code)
 
@@ -60,11 +65,14 @@ async def health_check(llm: LLMAdapter = Depends(lambda: llm_adapter_instance)):
 # But this block allows running `python -m app.main` for simple cases (less common)
 if __name__ == "__main__":
     import uvicorn
-    logger.info(f"Starting Uvicorn server on port {settings.PORT} with reload={settings.RELOAD}")
+
+    logger.info(
+        f"Starting Uvicorn server on port {settings.PORT} with reload={settings.RELOAD}"
+    )
     uvicorn.run(
         "app.main:app",
         host="0.0.0.0",
         port=settings.PORT,
         reload=settings.RELOAD,
-        log_level=log_level
+        log_level=log_level,
     )

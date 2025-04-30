@@ -1,8 +1,11 @@
 import logging
-from .interface import LLMAdapter
+
 from app.core.config import settings
 
+from .interface import LLMAdapter
+
 logger = logging.getLogger(__name__)
+
 
 class StubLLMAdapter(LLMAdapter):
     """A simple stub adapter for local testing without real API calls."""
@@ -15,7 +18,8 @@ class StubLLMAdapter(LLMAdapter):
         return f"[* {style} *] {text} [* /{style} *]"
 
     def health_check(self) -> bool:
-        return True # Stub is always "healthy"
+        return True  # Stub is always "healthy"
+
 
 class OpenAILLMAdapter(LLMAdapter):
     """Adapter for OpenAI API (Requires 'openai' package)."""
@@ -54,12 +58,15 @@ class OpenAILLMAdapter(LLMAdapter):
         # A real check might try a small, cheap API call.
         return bool(self.api_key)
 
+
 class AnthropicLLMAdapter(LLMAdapter):
     """Adapter for Anthropic API (Requires 'anthropic' package)."""
 
     def __init__(self, api_key: str):
         if not api_key:
-            raise ValueError("Anthropic API key is required for AnthropicLLMAdapter")
+            raise ValueError(
+                "Anthropic API key is required for AnthropicLLMAdapter"
+            )
         self.api_key = api_key
         # Initialize Anthropic client here
         # from anthropic import AsyncAnthropic
@@ -88,6 +95,7 @@ class AnthropicLLMAdapter(LLMAdapter):
     def health_check(self) -> bool:
         return bool(self.api_key)
 
+
 # Factory function to get the configured adapter
 def get_llm_adapter() -> LLMAdapter:
     """Creates and returns the appropriate LLM adapter based on settings."""
@@ -96,33 +104,46 @@ def get_llm_adapter() -> LLMAdapter:
 
     if provider == "openai":
         if not api_key:
-            logger.warning("OpenAI provider selected but no LLM_API_KEY found. Falling back to stub.")
+            logger.warning(
+                "OpenAI provider selected but no LLM_API_KEY found. Falling back to stub."
+            )
             return StubLLMAdapter()
         # Optional: Check if 'openai' package is installed
         try:
-            import openai # noqa
+            import openai  # noqa
+
             return OpenAILLMAdapter(api_key=api_key)
         except ImportError:
-            logger.error("OpenAI provider selected but 'openai' package not installed. Falling back to stub.")
+            logger.error(
+                "OpenAI provider selected but 'openai' package not installed. Falling back to stub."
+            )
             return StubLLMAdapter()
     elif provider == "anthropic":
         if not api_key:
-            logger.warning("Anthropic provider selected but no LLM_API_KEY found. Falling back to stub.")
+            logger.warning(
+                "Anthropic provider selected but no LLM_API_KEY found. Falling back to stub."
+            )
             return StubLLMAdapter()
         # Optional: Check if 'anthropic' package is installed
         try:
-            import anthropic # noqa
+            import anthropic  # noqa
+
             return AnthropicLLMAdapter(api_key=api_key)
         except ImportError:
-            logger.error("Anthropic provider selected but 'anthropic' package not installed. Falling back to stub.")
+            logger.error(
+                "Anthropic provider selected but 'anthropic' package not installed. Falling back to stub."
+            )
             return StubLLMAdapter()
     elif provider == "stub":
         logger.info("Using Stub LLM Adapter.")
         return StubLLMAdapter()
     else:
         # This shouldn't happen due to Pydantic validation, but defensively:
-        logger.error(f"Unknown LLM_PROVIDER '{provider}'. Falling back to stub.")
+        logger.error(
+            f"Unknown LLM_PROVIDER '{provider}'. Falling back to stub."
+        )
         return StubLLMAdapter()
+
 
 # Singleton instance of the adapter
 llm_adapter_instance = get_llm_adapter()

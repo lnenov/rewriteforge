@@ -28,7 +28,13 @@ build-backend = "poetry.core.masonry.api"
 
 # --- Ruff Configuration ---
 [tool.ruff]
-line-length = 88
+line-length = 80
+
+[tool.ruff.format]
+quote-style = "double"
+
+[tool.ruff.lint]
+# Add any specific configurations if needed
 select = [
     "E", "W", # pycodestyle
     "F",      # pyflakes
@@ -42,14 +48,6 @@ select = [
     "RUF",    # Ruff-specific rules
 ]
 ignore = ["E501"] # Ignore line length handled by formatter
-
-[tool.ruff.format]
-quote-style = "double"
-
-[tool.ruff.lint]
-# Add any specific configurations if needed
-[tool.ruff.lint.isort]
-known-first-party = ["app"]
 
 # --- Pytest Configuration ---
 [tool.pytest.ini_options]

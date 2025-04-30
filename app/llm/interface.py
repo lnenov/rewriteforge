@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 
+
 class LLMAdapter(ABC):
     """Abstract Base Class for LLM Adapters"""
 
