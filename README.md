@@ -156,14 +156,14 @@ Error Responses: 500 Internal Server Error, 503 Service Unavailable (depending o
 
 ## Next Steps
 
-# Refactor code after Google AI Studio generation. There are still suggestive comments inside. A lot of if
+Refactor code after Google AI Studio generation. There are still suggestive comments inside. A lot of if
 
-# Implement actual LLM calls
+Implement actual LLM calls
 
-# Refactor adapter to exclude middle of file imports and reduce the number of if/else statements and remove the fallback to StubLLMAdapter
+Refactor adapter to exclude middle of file imports and reduce the number of if/else statements and remove the fallback to StubLLMAdapter
 
-# Move caching to real caching solution
+Move caching to real caching solution
 
-# Have an integration test "with integration" :)
+Have an integration test "with integration" :)
 
-# Add tests for Anthropic
+Add tests for Anthropic
