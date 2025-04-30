@@ -101,18 +101,25 @@ Ensure development dependencies are installed (`poetry install --with dev`).
 
 ```bash
 poetry run pytest
-Linting and Formatting
+```
+
+## Linting and Formatting
 
 Ensure development dependencies are installed.
 
 # Check formatting and linting
+```bash
 poetry run ruff check .
 poetry run ruff format --check .
+```
 
 # Apply formatting and fixes (if possible)
+```bash
 poetry run ruff format .
 poetry run ruff check --fix .
-API Endpoints
+```
+
+## API Endpoints
 
 POST /v1/rewrite: Rewrites text.
 
